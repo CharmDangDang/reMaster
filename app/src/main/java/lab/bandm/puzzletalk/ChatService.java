@@ -121,7 +121,7 @@ public class ChatService extends Service {
         //사용자 수 줄이고 서버에 저장하고 사용자가 아무도 없으면 모든 데이터 삭제
         user_count--;
         count_prefs.setValue(user_count);
-        if (user_count == 0 && Integer.parseInt(roomNumber)>10) {
+        if (user_count == 0 && Integer.parseInt(roomNumber)>2) {
             count_prefs.removeValue();
             myRef.removeValue();
         }

@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -174,26 +175,11 @@ public class TradeContentActivity extends AppCompatActivity {
             replyData.setR_YMDH(r_YMDH);
             reference.push().setValue(replyData);
             getTokenReference = FirebaseDatabase.getInstance().getReference("write").child(tradeData.get(position).getTrade_title());
-            getTokenReference.addChildEventListener(new ChildEventListener() {
+            getTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     TokenRD tokenRD = dataSnapshot.getValue(TokenRD.class);
                     send(tokenRD);
-
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 }
 
