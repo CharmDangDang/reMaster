@@ -23,7 +23,8 @@
             <View
                 android:layout_width="273dp"
                 android:layout_height="0dp"/>
-        <ImageButton
+
+        <!--<ImageButton
             android:id="@+id/settingbtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -32,7 +33,7 @@
             android:background="@color/RealWhite"
             android:src="@drawable/setting_image"
             android:layout_gravity=""
-            />
+            />-->
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout

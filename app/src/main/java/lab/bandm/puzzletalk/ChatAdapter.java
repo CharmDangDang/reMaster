@@ -67,19 +67,20 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 0:
                 MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
                 myChatViewHolder.text_Mymsg.setText(chatData.getMsg());
-                myChatViewHolder.text_Mymsg.setTextSize(14 * MainActivity.context.getResources().getDisplayMetrics().density);
+
                 break;
             case 1:
                 EnemyChatViewHolder enemyChatViewHolder = (EnemyChatViewHolder) holder;
                 enemyChatViewHolder.text_Nickname.setText(chatData.getEnemyname());
                 enemyChatViewHolder.text_Nickname.setTextColor(Color.RED);
-                enemyChatViewHolder.text_msg.setTextSize(14 * MainActivity.context.getResources().getDisplayMetrics().density);
+
                 enemyChatViewHolder.text_msg.setText(chatData.getMsg());
                 break;
             default:
                 break;
         }
     }
+    //14 * MainActivity.context.getResources().getDisplayMetrics().density
 
     @Override
     public int getItemViewType(int position) {

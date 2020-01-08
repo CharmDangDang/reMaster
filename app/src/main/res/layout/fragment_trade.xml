@@ -16,16 +16,22 @@
         android:textSize="16sp"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/Trade_refresh"
+        android:layout_weight="9.3">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/trade_recycler"
         tools:listitem="@layout/trade_item"
-        android:layout_weight="9"/>
+        />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
 
         android:orientation="horizontal"
         android:weightSum="10">
@@ -39,21 +45,16 @@
             android:clickable="true"
             android:layout_weight="2"
             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/testbtn"
-            />
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"/>
+            android:layout_weight="6.8"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@drawable/dahyun"
+            android:backgroundTint="@color/bora"
             android:clickable="true"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:focusable="true"
             android:id="@+id/trade_create_button"/>
     </LinearLayout>

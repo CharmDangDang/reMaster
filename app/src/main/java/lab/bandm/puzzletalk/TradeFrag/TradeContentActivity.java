@@ -1,11 +1,13 @@
 package lab.bandm.puzzletalk.TradeFrag;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import lab.bandm.puzzletalk.GetYMDH;
 import lab.bandm.puzzletalk.TokenRD;
 import lab.bandm.puzzletalk.clickUtil.ProtectedOverlappingClick;
 
@@ -60,6 +60,7 @@ public class TradeContentActivity extends AppCompatActivity {
     DatabaseReference reference;
     DatabaseReference getTokenReference;
     SingleClickListener singleClickListener;
+    TokenRD tokenRD;
 
 
     @SuppressLint("SetTextI18n")
@@ -128,6 +129,21 @@ public class TradeContentActivity extends AppCompatActivity {
         singleClickListener = new SingleClickListener();
         reply_submit.setOnClickListener(singleClickListener);
 
+        getTokenReference = FirebaseDatabase.getInstance().getReference("write").child(tradeData.get(position).getTrade_title());
+        getTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tokenRD = dataSnapshot.getValue(TokenRD.class);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 
@@ -174,21 +190,9 @@ public class TradeContentActivity extends AppCompatActivity {
             replyData.setR_content(r_content);
             replyData.setR_YMDH(r_YMDH);
             reference.push().setValue(replyData);
-            getTokenReference = FirebaseDatabase.getInstance().getReference("write").child(tradeData.get(position).getTrade_title());
-            getTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    TokenRD tokenRD = dataSnapshot.getValue(TokenRD.class);
-                    send(tokenRD);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
+            send(tokenRD);
+            reply_edit.setText("");
+            keyboardHidden();
         }
     }
     public void send(TokenRD tokenRD) {
@@ -230,11 +234,11 @@ public class TradeContentActivity extends AppCompatActivity {
     }
 
     public interface SendResponseListener {
-        public void onRequestStarted();
+         void onRequestStarted();
 
-        public void onRequestCompleted();
+         void onRequestCompleted();
 
-        public void onRequestWithError(VolleyError error);
+         void onRequestWithError(VolleyError error);
     }
     public void sendData(JSONObject requestData, final SendResponseListener listener) {
         JsonObjectRequest request = new JsonObjectRequest(
@@ -275,4 +279,12 @@ public class TradeContentActivity extends AppCompatActivity {
         listener.onRequestStarted();
         requestQueue.add(request);
     }
+
+    private void keyboardHidden(){
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
+
 }

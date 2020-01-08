@@ -3,12 +3,9 @@ package lab.bandm.puzzletalk.TradeFrag;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -29,15 +27,14 @@ import java.util.concurrent.ExecutionException;
 
 import lab.bandm.puzzletalk.R;
 
-public class TradeFrag extends Fragment implements TextWatcher {
+public class TradeFrag extends Fragment {
     private EditText trade_search_edit;
     private RecyclerView recyclerView;
     private FloatingActionButton create_button;
-    TradeRecyclerAdapter adapter;
-    ArrayList<TradeData> list;
+    private TradeRecyclerAdapter adapter;
+    private ArrayList<TradeData> list;
     private TextView refreshBtn;
-    Button button;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     private Context context;
@@ -61,7 +58,7 @@ public class TradeFrag extends Fragment implements TextWatcher {
         recyclerView = view.findViewById(R.id.trade_recycler);
         refreshBtn = view.findViewById(R.id.ildanTest);
         trade_search_edit = view.findViewById(R.id.trade_search_edit);
-        button = view.findViewById(R.id.testbtn);
+        swipeRefreshLayout = view.findViewById(R.id.Trade_refresh);
         list = new ArrayList<>();
         showResult();
         recyclerView.setHasFixedSize(true);
@@ -69,40 +66,21 @@ public class TradeFrag extends Fragment implements TextWatcher {
         recyclerView.setAdapter(adapter);
 
         create_button = view.findViewById(R.id.trade_create_button);
-        refreshBtn.setClickable(true);
-        refreshBtn.setFocusable(true);
-       /* recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
-
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                int position = recyclerView.getChildAdapterPosition(child);
-                Intent intent = new Intent(getContext(),Trade_Content.class);
-                startActivity(intent);
-
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });*/
-        trade_search_edit.addTextChangedListener(this);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recyclerView.removeAllViewsInLayout();
+            public void onRefresh() {
+                list.clear();
+                adapter.notifyDataSetChanged();
                 showResult();
 
             }
         });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+
+
         create_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +95,7 @@ public class TradeFrag extends Fragment implements TextWatcher {
     }
 
     public void showResult() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         TradeCallTask tradeCallTask = new TradeCallTask();
         tradeCallTask.execute();
@@ -178,35 +156,6 @@ public class TradeFrag extends Fragment implements TextWatcher {
 
         }
 
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        this.adapter.notifyDataSetChanged()
-
-
-        ;
-    }
-
-    public void refresh() {
-        this.adapter.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
 
     }
 }

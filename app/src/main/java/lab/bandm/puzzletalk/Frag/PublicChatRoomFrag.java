@@ -7,23 +7,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-
+import android.provider.Settings;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.Settings;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,10 +33,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import lab.bandm.puzzletalk.ChatAdapter;
 import lab.bandm.puzzletalk.ChatData;
 import lab.bandm.puzzletalk.ChatService;
-import lab.bandm.puzzletalk.MainActivity;
 import lab.bandm.puzzletalk.R;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -66,6 +62,7 @@ public class PublicChatRoomFrag extends Fragment {
     private DatabaseReference publicRef;
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1;
     private String DB_TAGNAME = "Message";
+    private MyKeyListener myKeyListener = new MyKeyListener();
     private PublicChildListener childListener = new PublicChildListener();
 
     public PublicChatRoomFrag() {
@@ -87,6 +84,7 @@ public class PublicChatRoomFrag extends Fragment {
         FINDID();
 
 
+
         publicRef = FirebaseDatabase.getInstance().getReference().child(DB_TAGNAME).child("1");
         publicRef.addChildEventListener(childListener);
         recyclerView.setHasFixedSize(true);                                 //리사이클러뷰의 최적화?를 설정
@@ -98,6 +96,8 @@ public class PublicChatRoomFrag extends Fragment {
         publicChatAdapter = new PublicChatAdapter(arrayList, myId);
         recyclerView.setAdapter(publicChatAdapter);
         clip = (ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(CLIPBOARD_SERVICE);
+
+
 
 
 
@@ -114,6 +114,7 @@ public class PublicChatRoomFrag extends Fragment {
         roomNumber = view.findViewById(R.id.roomNum);
         recyclerView = view.findViewById(R.id.publicRecyclerView);
         publicChat = view.findViewById(R.id.publicChatEdit);
+        publicChat.setOnKeyListener(myKeyListener);
         publicEnter = view.findViewById(R.id.publicEnterchat);
         publicEnter.setOnClickListener(onClick);
 
@@ -218,6 +219,17 @@ public class PublicChatRoomFrag extends Fragment {
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
+    }
+    class MyKeyListener implements View.OnKeyListener {
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                publicEnter.callOnClick();
+                return false;
+            }
+            return true;
+        }
     }
 }
 
