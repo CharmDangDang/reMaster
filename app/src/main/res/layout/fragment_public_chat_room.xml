@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Frag.PublicChatRoomFrag">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/editlinear"
+        android:background="#9bbbd4"
+        android:orientation="vertical"
+        android:id="@+id/publicRecyclerView"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:id="@+id/editlinear"
+        android:layout_above="@+id/codeipryoku">
+
+        <EditText
+            android:id="@+id/publicChatEdit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:background="@color/RealWhite"
+            tools:ignore="NestedWeights,UnusedAttribute"
+            />
+        <Button
+            android:id="@+id/publicEnterchat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="@string/sendchat"
+            android:textSize="14sp"
+            android:background="@color/RealWhite"/>
+
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/codeipryoku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/roomNum"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="5dp"
+        android:background="#222266"
+        android:gravity="center"
+
+        android:text="멀티 참여 코드를 입력해주세요"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/roomNum"
+        android:layout_alignBottom="@+id/roomNum"
+        android:layout_marginTop="-10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="-4dp"
+        android:layout_toStartOf="@+id/roomNum"
+        android:text="초기화"
+        android:id="@+id/roomNumReset"/>
+
+    <Button
+        android:id="@+id/ctrlV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/roomNum"
+        android:layout_alignBottom="@+id/roomNum"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="-4dp"
+        android:layout_toEndOf="@+id/roomNum"
+        android:text="붙여넣기" />
+
+    <EditText
+        android:id="@+id/roomNum"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearbottom"
+        android:layout_centerInParent="true"
+        android:background="@color/pink"
+        android:inputType="number"
+        android:hint="1~10번방은 공용채팅입니다."
+        android:text="1"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:id="@+id/linearbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/btn_create_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="@string/createRoom"
+            android:layout_gravity="center"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</RelativeLayout>

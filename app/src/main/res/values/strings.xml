@@ -1,0 +1,35 @@
+<resources>
+    <string name="id_hint">ID - 4자 이상 15자 미만</string>
+    <string name="pw_hint">PASSWORD - 4자 이상 15자 미만</string>
+    <string name="maker">Made by KimHB and ChoiYM</string>
+    <string name="tab_text_1">공용 채팅</string>
+    <string name="id_save">ID저장</string>
+    <string name="pw_save">PW저장</string>
+    <string name="app_name">PuzzleTALK</string>
+    <string name="my_id">아이디</string>
+    <string name="set_my_id">아이디 표시</string>
+    <string name="id_color">색</string>
+    <string name="createRoom">방 입장하기</string>
+    <string name="enterRoom">입장하기</string>
+    <string name="login">로그인</string>
+    <string name="signIN">회원가입</string>
+    <string name="sendchat">전송</string>
+    <string name="password">비밀번호</string>
+    <string name="userID">아이디</string>
+    <string name="puzzle_talk">PUZZLE TALK</string>
+    <string name="room_hint">멀티 참여 코드를 입력해주세요</string>
+    <string name="callme">신고/문의</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="tab_text_2">거래</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_text_3">협력</string>
+    <string name="title_search">제목 검색</string>
+    <string name="titlecreate">제목 :</string>
+    <string name="tradeCreateCancel">취소</string>
+    <string name="tradeCreateOK">작성</string>
+    <string name="trade_title">제목 :</string>
+    <string name="trade_content">내용 :</string>
+    <string name="setting">설정</string>>
+</resources>

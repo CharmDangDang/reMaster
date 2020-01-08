@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "601367292075",
+    "firebase_url": "https://puzzletalk-bd2f7.firebaseio.com",
+    "project_id": "puzzletalk-bd2f7",
+    "storage_bucket": "puzzletalk-bd2f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601367292075:android:9657bcc73505a3b5c8afee",
+        "android_client_info": {
+          "package_name": "lab.bandm.puzzletalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601367292075-mab3e8d9ott7828bejos5u6n213uln5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPhACZSjvGwSK8-KGvuep98Cwhyg0LW7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601367292075-mab3e8d9ott7828bejos5u6n213uln5p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="lab.bandm.puzzletalk">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ptalkiconmadebyhmk"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ptalkiconmadebyhmk"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".TradeFrag.TradeContentActivity"></activity>
+        <activity android:name=".TradeFrag.TradeCreateActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".MiniActivity" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".ChatService"
+            android:enabled="true"
+            android:permission="TODO"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="ExportedService">
+
+            <!-- android:windowSoftInputMode="adjustResize" -->
+
+            <intent-filter>
+                <action android:name="lab.bandm.ChatService" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".MainActivity" />
+    </application>
+
+</manifest>

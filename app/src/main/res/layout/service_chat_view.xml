@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+
+        <TextView
+            android:id="@+id/chat_id"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:text="@string/my_id"
+            android:gravity="center"
+            android:background="@drawable/idicon"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:padding="2dp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+        <Button
+            android:id="@+id/btn_mini"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/chat_id"
+            android:background="@color/RealWhite"
+            android:padding="2dp"
+            android:text="_"
+            android:textSize="14sp" />
+
+        <Button
+
+            android:id="@+id/btn_exit"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="X"
+            android:background="@color/RealWhite"
+            android:textSize="14sp"
+
+            tools:ignore="HardcodedText" />
+
+        <Button
+
+            android:id="@+id/btn_room"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="41dp"
+            android:layout_toEndOf="@+id/chat_id"
+            android:background="@color/RealWhite"
+            android:gravity="center"
+            android:text="이동"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recylcerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="80"
+        android:background="#ffffff"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="10"
+        android:weightSum="10">
+
+        <EditText
+            android:id="@+id/chatEdit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:background="@color/RealWhite"
+            android:defaultFocusHighlightEnabled="true"
+            android:screenReaderFocusable="false"
+            tools:ignore="NestedWeights,UnusedAttribute" />
+            <!--android:focusable="true"
+            android:focusableInTouchMode="true"-->
+
+        <Button
+            android:id="@+id/Enterchat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:text="@string/sendchat"
+            android:textSize="14sp"
+            android:background="@color/RealWhite"/>
+            <!--android:autoSizeTextType="uniform"-->
+
+
+    </LinearLayout>
+
+</LinearLayout>
