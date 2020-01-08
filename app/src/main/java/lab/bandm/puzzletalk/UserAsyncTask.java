@@ -115,9 +115,6 @@ public class UserAsyncTask extends AsyncTask<String, String, String> {
                             TokenRD tokenRD=new TokenRD();
                             tokenRD.setmToken(task.getResult().getToken());
                             databaseReference.setValue(tokenRD);
-                            preferences = context.getSharedPreferences("PrefName",Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("내토큰",task.getResult().getToken());
 
                         }
 

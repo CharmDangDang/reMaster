@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -97,7 +99,7 @@ public class TradeCreateActivity extends AppCompatActivity {
     class MyListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            String title = tradeTitleEdit.getText().toString();
+            final String title = tradeTitleEdit.getText().toString();
             String content = tradeContentEdit.getText().toString();
             String YMDH = GetYMDH.callYMDH();
             String Name = CallINFO(CALL_ID);
@@ -105,24 +107,24 @@ public class TradeCreateActivity extends AppCompatActivity {
             String currentTime = String.valueOf(System.currentTimeMillis());
             Log.d("시간", "onClick: "+currentTime);
             String IP = getLocalIpAddress();
-            final TokenRD[] token = new TokenRD[1];
             TradeAsyncTask task = new TradeAsyncTask(TradeCreateActivity.this, title, content, YMDH, Name, nation, IP, currentTime);
             task.execute();
-            tokenReference = FirebaseDatabase.getInstance().getReference("token");
+            tokenReference = FirebaseDatabase.getInstance().getReference("token").child(CallINFO(CALL_ID));
             tokenReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    token[0] =  dataSnapshot.getValue(TokenRD.class);
+                    TokenRD token = dataSnapshot.getValue(TokenRD.class);
+                    TokenInsert(token,title);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });얼러러러러
+            });
 
-            reference = FirebaseDatabase.getInstance().getReference("write").child(title);
-            reference.setValue(token[0].getmToken());
+
+
 
 
 
@@ -135,6 +137,11 @@ public class TradeCreateActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+
+    }
+    public void TokenInsert(TokenRD tokenRD,String title) {
+        reference = FirebaseDatabase.getInstance().getReference("write").child(title);
+        reference.setValue(tokenRD);
 
     }
 }

@@ -3,24 +3,12 @@ package lab.bandm.puzzletalk.TradeFrag;
 import java.io.Serializable;
 
 public class ReplyData implements Serializable {
-    private String r_id;
-    private String r_YMDH;
-    private String r_content;
-    private String m_Token;
+    public String r_id;
+    public String r_YMDH;
+    public String r_content;
 
-    public String getM_Token() {
-        return m_Token;
-    }
 
-    public void setM_Token(String m_Token) {
-        this.m_Token = m_Token;
-    }
-
-    public ReplyData(String r_id, String r_YMDH, String r_content,String m_Token) {
-        this.r_id = r_id;
-        this.r_YMDH = r_YMDH;
-        this.r_content = r_content;
-        this.m_Token = m_Token;
+    public ReplyData() {
     }
 
     public String getR_id() {

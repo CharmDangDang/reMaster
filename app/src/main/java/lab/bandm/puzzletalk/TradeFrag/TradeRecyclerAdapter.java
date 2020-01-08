@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import lab.bandm.puzzletalk.GetYMDH;
 import lab.bandm.puzzletalk.R;
 
 
@@ -79,7 +80,7 @@ public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAda
         });
         viewholder.name.setText(dataArrayList.get(position).getTrade_id());
         if (dataArrayList.get(position).getCurrentTime() != null) {
-            viewholder.time.setText(TIME_MAXIMUM.formatTimeString(Long.parseLong(dataArrayList.get(position).getCurrentTime())).trim());
+            viewholder.time.setText(GetYMDH.formatTimeString(Long.parseLong(dataArrayList.get(position).getCurrentTime())).trim());
         }
         viewholder.isOK.setText(dataArrayList.get(position).getIsOK());
         if (dataArrayList.get(position).getNation().equals("한국")) {
@@ -94,64 +95,9 @@ public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAda
         return (null != dataArrayList ? dataArrayList.size() : 0);
     }
 
-    private static class TIME_MAXIMUM {
-        private static final int SEC = 60;
-        private static final int MIN = 60;
-        private static final int HOUR = 24;
-        private static final int DAY = 30;
-        private static final int MONTH = 12;
-
-        static String formatTimeString(long regTime) {
-            long curTime = System.currentTimeMillis();
-            long diffTime = (curTime - regTime) / 1000;
-            String msg;
-            if (diffTime < TIME_MAXIMUM.SEC) {
-                msg = "방금 전";
-            } else if ((diffTime /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
-                msg = diffTime + "분 전";
-            } else if ((diffTime /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
-                msg = (diffTime) + "시간 전";
-            } else if ((diffTime /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
-                msg = (diffTime) + "일 전";
-            } else if ((diffTime /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
-                msg = (diffTime) + "달 전";
-            } else {
-                msg = (diffTime) + "년 전";
-            }
-            return msg;
-        }
-    }
 
 
-    /*@Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String charString=constraint.toString();
-                //에디트 텍스트에 써있는값을 불러옴
-                if(charString.isEmpty()){
-                    filteredList=dataArrayList; //에디트텍스트에 아무것도 안써져있다면 모든 자료를 보여주기
-                }else{
-                    ArrayList<TradeData> filteringList=new ArrayList<>();  //필터링중일떄 ex)'전ㅎ' 일때 보여줄 리스트
-                    for(TradeData tradeData:dataArrayList){
-                        if(tradeData.getTrade_title()
-                        .toLowerCase().contains(charString.toLowerCase()))
-                            filteringList.add(tradeData);
-                    }
-                    filteredList=filteringList;
-                }
-                FilterResults filterResults=new FilterResults();
-                filterResults.values=filteredList;
-                return filterResults;
-            }
 
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredList=(ArrayList<TradeData>)results.values;
-                notifyDataSetChanged();
-            }
-        };*/
 
 
         private class SubjectDataFilter extends Filter {
@@ -207,5 +153,6 @@ public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAda
         }
 
 }
+
 
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import lab.bandm.puzzletalk.GetYMDH;
 import lab.bandm.puzzletalk.R;
 
 public class TradeReplyAdapter extends RecyclerView.Adapter<TradeReplyAdapter.CustomViewHolder> {
@@ -53,7 +54,7 @@ public class TradeReplyAdapter extends RecyclerView.Adapter<TradeReplyAdapter.Cu
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.contentview.setText(dataArrayList.get(position).getR_content());
         holder.idview.setText(dataArrayList.get(position).getR_id());
-        holder.YMDHview.setText(dataArrayList.get(position).getR_YMDH());
+        holder.YMDHview.setText(GetYMDH.formatTimeString(Long.parseLong(dataArrayList.get(position).getR_YMDH())));
 
 
     }
