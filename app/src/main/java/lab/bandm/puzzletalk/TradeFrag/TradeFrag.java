@@ -1,5 +1,6 @@
 package lab.bandm.puzzletalk.TradeFrag;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class TradeFrag extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,9 +74,11 @@ public class TradeFrag extends Fragment {
                 list.clear();
                 adapter.notifyDataSetChanged();
                 showResult();
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
+        swipeRefreshLayout.setColorSchemeColors(R.color.p_red,R.color.p_blue,R.color.p_green,R.color.p_yami,R.color.p_hikari,R.color.p_heal);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import lab.bandm.puzzletalk.GetToken;
 import lab.bandm.puzzletalk.TokenRD;
 import lab.bandm.puzzletalk.clickUtil.ProtectedOverlappingClick;
 
@@ -190,7 +191,9 @@ public class TradeContentActivity extends AppCompatActivity {
             replyData.setR_content(r_content);
             replyData.setR_YMDH(r_YMDH);
             reference.push().setValue(replyData);
-            send(tokenRD);
+            if(!tokenRD.getmToken().equals(GetToken.CallToken())) {
+                send(tokenRD);
+            }
             reply_edit.setText("");
             keyboardHidden();
         }

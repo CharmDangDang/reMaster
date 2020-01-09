@@ -9,4 +9,11 @@
     <color name="Dark">#cc000000</color>
     <color name="pink">#ffc0cb</color>
     <color name="bora">#8b00ff</color>
+    <color name="p_red">#ff0000</color>
+    <color name="p_green">#60ff60</color>
+    <color name="p_blue">#0000ff</color>
+    <color name="p_yami">#88209b</color>
+    <color name="p_hikari">#ffed59</color>
+    <color name="p_heal">#e854a2</color>
+
 </resources>
