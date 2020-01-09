@@ -84,7 +84,6 @@ public class PublicChatRoomFrag extends Fragment {
         FINDID();
 
 
-
         publicRef = FirebaseDatabase.getInstance().getReference().child(DB_TAGNAME).child("1");
         publicRef.addChildEventListener(childListener);
         recyclerView.setHasFixedSize(true);                                 //리사이클러뷰의 최적화?를 설정
@@ -96,9 +95,6 @@ public class PublicChatRoomFrag extends Fragment {
         publicChatAdapter = new PublicChatAdapter(arrayList, myId);
         recyclerView.setAdapter(publicChatAdapter);
         clip = (ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(CLIPBOARD_SERVICE);
-
-
-
 
 
         return view;
@@ -115,6 +111,7 @@ public class PublicChatRoomFrag extends Fragment {
         recyclerView = view.findViewById(R.id.publicRecyclerView);
         publicChat = view.findViewById(R.id.publicChatEdit);
         publicChat.setOnKeyListener(myKeyListener);
+
         publicEnter = view.findViewById(R.id.publicEnterchat);
         publicEnter.setOnClickListener(onClick);
 
@@ -220,18 +217,21 @@ public class PublicChatRoomFrag extends Fragment {
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
+
     class MyKeyListener implements View.OnKeyListener {
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 publicEnter.callOnClick();
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
     }
+
 }
+
 
 
 
