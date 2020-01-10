@@ -2,9 +2,11 @@ package lab.bandm.puzzletalk;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,7 +37,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getSupportActionBar().hide();
+        } else if (Build.VERSION.SDK_INT < 21) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+
         FindID_and_setClickListener();
+
     }
 
     @Override
@@ -116,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.remove("chk_pwd");
         }
         editor.putString("로그인아이디", id);
+        editor.putString("서버","한국");
         editor.apply();
     }
 

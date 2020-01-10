@@ -15,5 +15,7 @@
     <color name="p_yami">#88209b</color>
     <color name="p_hikari">#ffed59</color>
     <color name="p_heal">#e854a2</color>
+    <color name="background">#333333</color>
+    <color name="mainColor">#7b68ee</color>
 
 </resources>

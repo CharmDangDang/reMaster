@@ -19,6 +19,7 @@
         android:orientation="horizontal"
         android:weightSum="10"
         android:id="@+id/editlinear"
+        android:background="#9bbbd4"
         android:layout_above="@+id/codeipryoku">
 
         <EditText
@@ -26,9 +27,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:background="@color/RealWhite"
+
+            android:background="@color/chatBackground"
+
             android:inputType="text"
             android:maxLines="1"
+
             android:textSize="20sp"
             tools:ignore="NestedWeights,UnusedAttribute" />
 
@@ -38,8 +42,11 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:text="@string/sendchat"
+            android:textColor="@color/RealWhite"
             android:textSize="20sp"
-            android:background="@color/RealWhite"/>
+
+            android:background="@drawable/btndesign"
+            />
 
 
 

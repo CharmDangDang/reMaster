@@ -81,6 +81,7 @@
         <EditText
             android:id="@+id/reply_edit"
             android:layout_width="0dp"
+            android:inputType="text"
             android:layout_height="match_parent"
             android:layout_weight="8" />
 

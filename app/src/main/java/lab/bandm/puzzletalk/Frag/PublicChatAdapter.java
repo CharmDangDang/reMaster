@@ -1,6 +1,5 @@
 package lab.bandm.puzzletalk.Frag;
 
-import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
 import lab.bandm.puzzletalk.ChatData;
 import lab.bandm.puzzletalk.MainActivity;
 import lab.bandm.puzzletalk.R;
@@ -79,7 +79,7 @@ public class PublicChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case 1:
                 PublicChatAdapter.EnemyChatViewHolder enemyChatViewHolder = (EnemyChatViewHolder) holder;
                 enemyChatViewHolder.text_Nickname.setText(chatData.getEnemyname());
-                enemyChatViewHolder.text_Nickname.setTextColor(Color.RED);
+                enemyChatViewHolder.text_Nickname.setTextColor(chatData.getNameColor());
                 enemyChatViewHolder.text_msg.setTextSize(3*inch);
                 enemyChatViewHolder.text_msg.setText(chatData.getMsg());
                 break;

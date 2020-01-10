@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/setting"
-        android:icon="@drawable/dahyun"
+        android:icon="@drawable/setting_icon"
         android:title="설정"
         app:showAsAction="always"/>
         />

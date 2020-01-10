@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 
 public class UserAsyncTask extends AsyncTask<String, String, String> {
@@ -106,6 +107,7 @@ public class UserAsyncTask extends AsyncTask<String, String, String> {
                     databaseReference=database_token.getReference("token").child(id);
                     firebaseInstanceId= FirebaseInstanceId.getInstance();
                     firebaseInstanceId.getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @SuppressLint("CommitPrefEdits")
                         @Override
                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
                             if (!task.isSuccessful()) {
@@ -113,7 +115,11 @@ public class UserAsyncTask extends AsyncTask<String, String, String> {
                                 return;
                             }
                             TokenRD tokenRD=new TokenRD();
-                            tokenRD.setmToken(task.getResult().getToken());
+                            tokenRD.setmToken(Objects.requireNonNull(task.getResult()).getToken());
+                            SharedPreferences preferences = context.getSharedPreferences("PrefName",Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("myToken",task.getResult().getToken());
+                            editor.apply();
                             databaseReference.setValue(tokenRD);
 
                         }

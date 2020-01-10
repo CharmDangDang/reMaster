@@ -50,18 +50,6 @@
 
             tools:ignore="HardcodedText" />
 
-        <Button
-
-            android:id="@+id/btn_room"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="41dp"
-            android:layout_toEndOf="@+id/chat_id"
-            android:background="@color/RealWhite"
-            android:gravity="center"
-            android:text="이동"
-            android:textSize="14sp"
-            tools:ignore="HardcodedText" />
 
 
     </RelativeLayout>

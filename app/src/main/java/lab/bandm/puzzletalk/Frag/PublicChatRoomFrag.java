@@ -5,11 +5,11 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 import lab.bandm.puzzletalk.ChatData;
 import lab.bandm.puzzletalk.ChatService;
 import lab.bandm.puzzletalk.R;
-import yuku.ambilwarna.AmbilWarnaDialog;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -48,11 +47,11 @@ public class PublicChatRoomFrag extends Fragment {
     private EditText roomNumber;
     private EditText publicChat;
     private View view;
-    private AmbilWarnaDialog ambilWarnaDialog;
     private Pattern pattern = Pattern.compile("^[0-9]{1,8}$");
     private ClipboardManager clip;
     private String RoomNumbered;
     private String myId;
+    private int nameColor;
     private SharedPreferences prefs;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -62,7 +61,6 @@ public class PublicChatRoomFrag extends Fragment {
     private DatabaseReference publicRef;
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1;
     private String DB_TAGNAME = "Message";
-    private MyKeyListener myKeyListener = new MyKeyListener();
     private PublicChildListener childListener = new PublicChildListener();
 
     public PublicChatRoomFrag() {
@@ -91,6 +89,7 @@ public class PublicChatRoomFrag extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         prefs = Objects.requireNonNull(this.getActivity()).getSharedPreferences("PrefName", Context.MODE_PRIVATE);
         myId = prefs.getString("로그인아이디", "");
+        nameColor = prefs.getInt("색깔", Color.RED);
 
         publicChatAdapter = new PublicChatAdapter(arrayList, myId);
         recyclerView.setAdapter(publicChatAdapter);
@@ -110,8 +109,6 @@ public class PublicChatRoomFrag extends Fragment {
         roomNumber = view.findViewById(R.id.roomNum);
         recyclerView = view.findViewById(R.id.publicRecyclerView);
         publicChat = view.findViewById(R.id.publicChatEdit);
-        publicChat.setOnKeyListener(myKeyListener);
-
         publicEnter = view.findViewById(R.id.publicEnterchat);
         publicEnter.setOnClickListener(onClick);
 
@@ -160,7 +157,7 @@ public class PublicChatRoomFrag extends Fragment {
                     String msg = publicChat.getText().toString();                 //메세지 불러오기
                     if (msg.length() != 0) {
                         String enemyNick = myId;   //prefs에서 아이디값 불러오기
-                        ChatData chat = new ChatData(enemyNick, msg);                         //chatdata 선언
+                        ChatData chat = new ChatData(enemyNick, msg,nameColor);                         //chatdata 선언
                         publicRef.push().setValue(chat);//데이터에 chatdata 넣기
                         publicChat.setText("");
                         //chat_edit.clearFocus();
@@ -218,17 +215,7 @@ public class PublicChatRoomFrag extends Fragment {
         startActivity(intent);
     }
 
-    class MyKeyListener implements View.OnKeyListener {
 
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                publicEnter.callOnClick();
-                return true;
-            }
-            return false;
-        }
-    }
 
 }
 

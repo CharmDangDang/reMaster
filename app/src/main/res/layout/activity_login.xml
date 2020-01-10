@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/background">
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,6 +30,7 @@
                 android:inputType="textEmailAddress"
                 android:fontFamily="@font/yangjinfont"
                 android:hint="@string/id_hint"
+                android:textColorHint="@color/RealWhite"
                  />
 
 
@@ -38,6 +40,7 @@
                 android:inputType="textPassword"
                 android:fontFamily="@font/yangjinfont"
                 android:hint="@string/pw_hint"
+                android:textColorHint="@color/RealWhite"
                 />
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,6 +51,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/id_Save"
             android:text="@string/id_save"
+            android:textColor="@color/RealWhite"
             android:layout_marginLeft="25dp"
             android:fontFamily="@font/yangjinfont"
             android:layout_height="wrap_content"
@@ -57,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/yangjinfont"
+            android:textColor="@color/RealWhite"
             android:text="@string/pw_save"/>
         </LinearLayout>
 

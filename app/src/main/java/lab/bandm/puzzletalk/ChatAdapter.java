@@ -1,6 +1,5 @@
 package lab.bandm.puzzletalk;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 1:
                 EnemyChatViewHolder enemyChatViewHolder = (EnemyChatViewHolder) holder;
                 enemyChatViewHolder.text_Nickname.setText(chatData.getEnemyname());
-                enemyChatViewHolder.text_Nickname.setTextColor(Color.RED);
+                enemyChatViewHolder.text_Nickname.setTextColor(chatData.getNameColor());
 
                 enemyChatViewHolder.text_msg.setText(chatData.getMsg());
                 break;

@@ -1,6 +1,7 @@
 package lab.bandm.puzzletalk;
 
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -19,15 +20,18 @@ public class GetYMDH {
 
     public static String callYMDH() {
 
-        //    long now = System.currentTimeMillis();
-        String form = "yyyy-MM-dd hh:mm:ss";
+
+        String form = "yyyy-MM-dd kk:mm:ss";
+
+        String KST = "Asia/Seoul";
+
+        Locale.setDefault(Locale.KOREA);
+        DateFormat inputDate = new SimpleDateFormat(form);
+        inputDate.setTimeZone(TimeZone.getTimeZone(KST));
         Date mDate = new Date();
 
-        SimpleDateFormat simpleDate = new SimpleDateFormat(form, Locale.KOREA);
+        return inputDate.format(mDate);
 
-        simpleDate.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-
-        return simpleDate.format(mDate);
     }
 
     public static String formatTimeString(long regTime) {

@@ -3,6 +3,7 @@ package lab.bandm.puzzletalk.TradeFrag;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,8 @@ public class TradeFrag extends Fragment {
     private ArrayList<TradeData> list;
     private TextView refreshBtn;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private final static int MyContent = 711;
+    private final static int WholeContent = 910711;
 
     private Context context;
 
@@ -62,7 +64,7 @@ public class TradeFrag extends Fragment {
         trade_search_edit = view.findViewById(R.id.trade_search_edit);
         swipeRefreshLayout = view.findViewById(R.id.Trade_refresh);
         list = new ArrayList<>();
-        showResult();
+        showResult(WholeContent);
         recyclerView.setHasFixedSize(true);
         adapter = new TradeRecyclerAdapter(getActivity(), list);
         recyclerView.setAdapter(adapter);
@@ -73,9 +75,17 @@ public class TradeFrag extends Fragment {
             public void onRefresh() {
                 list.clear();
                 adapter.notifyDataSetChanged();
-                showResult();
+                showResult(WholeContent);
                 swipeRefreshLayout.setRefreshing(false);
 
+            }
+        });
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                list.clear();
+                adapter.notifyDataSetChanged();
+                showResult(MyContent);
             }
         });
         swipeRefreshLayout.setColorSchemeColors(R.color.p_red,R.color.p_blue,R.color.p_green,R.color.p_yami,R.color.p_hikari,R.color.p_heal);
@@ -98,7 +108,10 @@ public class TradeFrag extends Fragment {
         return view;
     }
 
-    public void showResult() {
+    public void showResult(int Code) {
+
+        SharedPreferences preferences = context.getSharedPreferences("PrefName",Context.MODE_PRIVATE);
+        String myID = preferences.getString("로그인아이디","");
 
 
         TradeCallTask tradeCallTask = new TradeCallTask();
@@ -146,7 +159,14 @@ public class TradeFrag extends Fragment {
                 tradeData.setTrade_YMDH(date);
                 tradeData.setCurrentTime(currentTime.trim());
                 tradeData.setIsOK(isOk);
-                list.add(tradeData);
+                if(Code==WholeContent){
+                    list.add(tradeData);
+                } else if(Code==MyContent){
+                    if(tradeData.getTrade_id().equals(myID)) {
+                        list.add(tradeData);
+                    }
+                }
+
 
 
             }

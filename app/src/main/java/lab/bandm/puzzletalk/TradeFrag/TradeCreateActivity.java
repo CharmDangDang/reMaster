@@ -9,10 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,7 +57,7 @@ public class TradeCreateActivity extends AppCompatActivity {
     private String CallINFO(int callNum) {
         SharedPreferences preferences = getSharedPreferences("PrefName", Context.MODE_PRIVATE);
         String id = preferences.getString("로그인아이디", "");
-        String nation = preferences.getString("국가", "");
+        String nation = preferences.getString("서버", "");
         if (callNum == CALL_NATION) {
             if (nation.equals("")) {
                 return "한국";

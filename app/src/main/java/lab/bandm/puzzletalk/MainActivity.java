@@ -15,8 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.Objects;
-
 import lab.bandm.puzzletalk.Frag.PublicChatRoomFrag;
 import lab.bandm.puzzletalk.Frag.TabAdapter;
 import lab.bandm.puzzletalk.TradeFrag.TradeFrag;
@@ -51,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.dahyun);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ptalkiconmadebyhmk);
 
     }
    /* SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());

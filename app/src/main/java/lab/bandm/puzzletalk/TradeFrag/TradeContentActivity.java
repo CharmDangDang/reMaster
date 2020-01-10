@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import lab.bandm.puzzletalk.GetToken;
 import lab.bandm.puzzletalk.TokenRD;
 import lab.bandm.puzzletalk.clickUtil.ProtectedOverlappingClick;
 
@@ -63,6 +62,8 @@ public class TradeContentActivity extends AppCompatActivity {
     SingleClickListener singleClickListener;
     TokenRD tokenRD;
 
+    String myToken;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -72,6 +73,7 @@ public class TradeContentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         position = intent.getIntExtra("position",0);
         tradeData = (ArrayList<TradeData>) intent.getSerializableExtra("trade");
+
 
         FINDID();
         assert tradeData != null;
@@ -184,6 +186,7 @@ public class TradeContentActivity extends AppCompatActivity {
         public void onSingleClick(View v) {
             preferences = getSharedPreferences("PrefName",MODE_PRIVATE);
             String myId = preferences.getString("로그인아이디","");
+            myToken = preferences.getString("myToken","");
             String r_content = reply_edit.getText().toString();
             String r_YMDH = String.valueOf(System.currentTimeMillis());
             ReplyData replyData = new ReplyData();
@@ -191,7 +194,7 @@ public class TradeContentActivity extends AppCompatActivity {
             replyData.setR_content(r_content);
             replyData.setR_YMDH(r_YMDH);
             reference.push().setValue(replyData);
-            if(!tokenRD.getmToken().equals(GetToken.CallToken())) {
+            if(!tokenRD.getmToken().equals(myToken)) {
                 send(tokenRD);
             }
             reply_edit.setText("");

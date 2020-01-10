@@ -5,13 +5,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,19 +19,20 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
 
-import static java.lang.StrictMath.abs;
+import java.util.ArrayList;
 
 public class ChatService extends Service {
 
@@ -42,7 +43,6 @@ public class ChatService extends Service {
     //채팅창 뷰 & 최소화 뷰
      View chatView;
      View miniIcon;
-     View roomChangeVIew;
     //화면 이동시 위치값 초기화
      float xpos = 0;
      float ypos = 0;
@@ -70,25 +70,19 @@ public class ChatService extends Service {
      ArrayList<ChatData> chatDataArrayList = new ArrayList<>();
      RecyclerView.Adapter chatAdapter;
      RecyclerView.LayoutManager layoutManager;
-     Button btn_exit, btn_send, btn_minimize,btn_room,roomChangeEnterBTN;
-     EditText chat_edit,roomNumEdtiText;
+     Button btn_exit, btn_send, btn_minimize;
+     EditText chat_edit;
      TextView id;
      String myId;
      String roomNumber;
+
      int id_color;
      SharedPreferences prefs;
      int LAYOUT_FLAG = 0;
      MyChildListener myChildListener;
      MyCountPrfValueListener myCountPrfValueListener;
 
-     //더블터치로 줌인 줌아웃 하기 위한 변수들
 
-     private int touch_zoom = 0; // 줌 크기
-     double touch_interval_X = 0; // X 터치 간격
-     double touch_interval_Y = 0; // Y 터치 간격
-    int zoomState = 0;
-    int zoom_in_count =0;
-    int zoom_out_count = 0;
 
     @SuppressLint({"RtlHardcoded", "InflateParams"})
     @Override
@@ -100,9 +94,10 @@ public class ChatService extends Service {
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
+
+        getLoginID();
         setChatLayout();
         findID();
-        getLoginID();
         setRecyclerView();
     }
 
@@ -134,14 +129,16 @@ public class ChatService extends Service {
     void getLoginID() {
         prefs = getSharedPreferences("PrefName", MODE_PRIVATE);
         myId = prefs.getString("로그인아이디", "");
-        id_color = prefs.getInt("아이디색상", 0);
+        id_color = prefs.getInt("색깔", Color.RED);
         roomNumber = prefs.getString("방번호", "");
-        id.setText(myId);
-        id.setTextColor(id_color);
+       /* id.setText(myId);
+        id.setTextColor(id_color);*/
     }
 
     //리사이클러뷰 설정과 리사이클러뷰에 띄울 파이어베이스 데이터 경로
     void setRecyclerView() {
+        id.setText(myId);
+        id.setTextColor(id_color);
         recyclerView.setHasFixedSize(true);                                 //리사이클러뷰의 최적화?를 설정
         layoutManager = new LinearLayoutManager(chatView.getContext());              //레이아웃매니저 만들기
         recyclerView.setLayoutManager(layoutManager);
@@ -164,7 +161,6 @@ public class ChatService extends Service {
     @SuppressLint("ClickableViewAccessibility")
     void findID() {
         MyOnClickListener myOnClickListener = new MyOnClickListener();
-        MyKeyListener myKeyListener = new MyKeyListener();
         id = chatView.findViewById(R.id.chat_id);
         recyclerView = chatView.findViewById(R.id.recylcerView);
         btn_send = chatView.findViewById(R.id.Enterchat);
@@ -172,10 +168,8 @@ public class ChatService extends Service {
         btn_exit = chatView.findViewById(R.id.btn_exit);
         btn_exit.setOnClickListener(myOnClickListener);
         chat_edit = chatView.findViewById(R.id.chatEdit);
-        chat_edit.setOnKeyListener(myKeyListener);
+
         //방바꾸기
-        btn_room = chatView.findViewById(R.id.btn_room);
-        btn_room.setOnClickListener(myOnClickListener);
 
         btn_minimize = chatView.findViewById(R.id.btn_mini);
         btn_minimize.setOnClickListener(myOnClickListener);
@@ -189,7 +183,6 @@ public class ChatService extends Service {
         display_x = size.x;
         display_y = size.y;
 
-        recyclerView.setOnTouchListener(new MyZoomListener());
     }
 
 
@@ -199,6 +192,7 @@ public class ChatService extends Service {
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
         chatView = (layoutInflater).inflate(R.layout.service_chat_view, null);
+
         chatView.setOnTouchListener(new MyOnTouchListener());
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         params = new WindowManager.LayoutParams(600
@@ -236,33 +230,7 @@ public class ChatService extends Service {
         params.y = view_location_Y;
         windowManager.addView(miniIcon, params);
     }
-    @SuppressLint("InflateParams")
-    void setRoomChangeLayout() {
-        if (view_state == 0){
-            windowManager.removeView(chatView);
-            LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            assert layoutInflater != null;
-            roomChangeVIew = (layoutInflater).inflate(R.layout.roomchange, null);
-            roomNumEdtiText = roomChangeVIew.findViewById(R.id.edit_roomNum);
-            roomNumEdtiText.setText(roomNumber);
-            roomChangeEnterBTN = roomChangeVIew.findViewById(R.id.btn_roomChange);
-            roomChangeEnterBTN.setOnClickListener(new MyOnClickListener());
-            windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-            params = new WindowManager.LayoutParams(600
-                    , 400,
-                    LAYOUT_FLAG,
-                    // very important, this sends touch events to underlying views
-                    //WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                    ,
-                    PixelFormat.TRANSLUCENT);
-            params.x = view_location_X;
-            params.y = view_location_Y;
 
-            windowManager.addView(roomChangeVIew, params);
-        }
-
-    }
 
     // 오버레이뷰 버튼 클릭 리스너 모음집
     class MyOnClickListener implements View.OnClickListener {
@@ -275,12 +243,12 @@ public class ChatService extends Service {
                     String msg = chat_edit.getText().toString();                 //메세지 불러오기
                     if (msg.length() != 0) {
                         String enemyNick = myId;   //prefs에서 아이디값 불러오기
-                        ChatData chat = new ChatData(enemyNick, msg);                         //chatdata 선언
+                        ChatData chat = new ChatData(enemyNick, msg,id_color);                         //chatdata 선언
                         myRef.push().setValue(chat);//데이터에 chatdata 넣기
                         chat_edit.setText("");
                         //chat_edit.clearFocus();
                         recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
-                        // updateOverlayView(0);
+                        //updateOverlayView(0);
                     }//리사이클러뷰 항상 하단으로 포지션주기
                     break;
                 case R.id.btn_exit:
@@ -291,42 +259,7 @@ public class ChatService extends Service {
                 case R.id.btn_mini:
                     setMiniLayout();
                     break;
-                case R.id.btn_room:
-                    setRoomChangeLayout();
-                    break;
-                case R.id.btn_roomChange:
-                    if (!roomNumber.equals(roomNumEdtiText.getText().toString())&& (user_count!=null)){
-                        user_count--;
-                        count_prefs.setValue(user_count);
-                        if (user_count == 0 && Integer.parseInt(roomNumber)>10) {
-                            count_prefs.removeValue();
-                            myRef.removeValue();
-                        }
-                        count_state = 0;
-                    }
 
-                    roomNumber = roomNumEdtiText.getText().toString();
-                    chatDataArrayList = new ArrayList<>();
-                    myRef.removeEventListener(myChildListener);
-                    count_prefs.removeEventListener(myCountPrfValueListener);
-                    setRecyclerView();
-
-                    windowManager.removeView(roomChangeVIew);
-
-                    windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-                    params = new WindowManager.LayoutParams(
-                            600,
-                            800,
-                            LAYOUT_FLAG,
-                            // very important, this sends touch events to underlying views
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                            ,
-                            PixelFormat.TRANSLUCENT);
-
-                    params.x = view_location_X;
-                    params.y = view_location_Y;
-                    windowManager.addView(chatView, params);
-                    break;
                 default:
                     view_state = 0;
                     windowManager.removeView(miniIcon);
@@ -394,18 +327,6 @@ public class ChatService extends Service {
             }
         }
 
-    class MyKeyListener implements View.OnKeyListener {
-
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                btn_send.callOnClick();
-                return false;
-                }
-            return true;
-            }
-        }
-
     class MyChildListener implements ChildEventListener {
 
         @Override
@@ -469,68 +390,4 @@ public class ChatService extends Service {
         }
     }
 
-    class MyZoomListener implements View.OnTouchListener{
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()){
-                case MotionEvent.ACTION_DOWN:
-                    zoomState = 0;
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if (event.getPointerCount() == 2) {
-                        if (zoomState==0){
-                            touch_interval_X = (double) abs(event.getX(0) - event.getX(1));
-                            touch_interval_Y = (double) abs(event.getY(0) - event.getY(1));
-                            zoomState =1;
-                        }
-
-                    double now_interval_X = (double) abs(event.getX(0) - event.getX(1)); // 두 손가락 X좌표 차이 절대값
-                        Log.d("x좌표 절대값", String.valueOf(now_interval_X));
-
-                    double now_interval_Y = (double) abs(event.getY(0) - event.getY(1)); // 두 손가락 Y좌표 차이 절대값
-                        Log.d("y좌표 절대값", String.valueOf(now_interval_Y));
-
-                        Log.d("디폴트 x좌표 절대값", String.valueOf(touch_interval_X));
-                        Log.d("디폴트 y좌표 절대값", String.valueOf(touch_interval_Y));
-                    if (touch_interval_X < now_interval_X && touch_interval_Y < now_interval_Y) { // 이전 값과 비교
-                        zoom_in_count++;
-
-                        if(zoom_in_count > 5) {
-                            zoom_in_count=0;
-                            touch_zoom += 5;
-                            if (params.width<display_x && params.height<display_y){
-                            params.width += touch_zoom;
-                            params.height += touch_zoom;
-
-                            windowManager.updateViewLayout(chatView, params);
-                            }
-                        }
-                    }
-                    if (touch_interval_X > now_interval_X && touch_interval_Y > now_interval_Y){
-                        zoom_out_count++;
-
-                        if(zoom_out_count > 5) {
-
-                            zoom_out_count = 0;
-
-                            touch_zoom += 5;
-                            if (params.width>400 && params.height>200){
-                            params.width -= touch_zoom;
-                            params.height -= touch_zoom;
-                            windowManager.updateViewLayout(chatView, params);
-                            }
-                        }
-                        }
-                    break;
-                }
-
-                case MotionEvent.ACTION_UP:
-                  zoomState=0;
-                    touch_zoom=0;
-                    break;
-            }
-            return false;
-        }
-    }
 }
