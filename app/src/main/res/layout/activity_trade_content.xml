@@ -4,103 +4,165 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#121212"
     android:orientation="vertical"
     android:weightSum="100"
     tools:context=".TradeFrag.TradeContentActivity">
 
-    <TextView
-        android:id="@+id/Ind_title"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:textSize="30sp"
-        android:gravity="center"/>
 
-
-    <TextView
-        android:id="@+id/Ind_content"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="30"
-        android:gravity="center"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
+        android:paddingTop="16dp"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/trade_content_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/trade_content_back"
+            android:background="#363636"
+
+            />
+
+        <ImageButton
+            android:id="@+id/trade_content_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="#363636"
+
+            android:src="@drawable/trade_content_end" />
+    </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:weightSum="10"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/trade_content_content">
+
+            <TextView
+                android:id="@+id/Ind_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:paddingTop="2dp"
+                android:paddingStart="60dp"
+                android:textColor="#ffffff"
+
+                android:layout_weight="0.7"/>
+
+
+            <TextView
+                android:id="@+id/Ind_content"
+                android:layout_width="match_parent"
+                android:paddingStart="60dp"
+                android:textColor="#ffffff"
+                android:paddingTop="3dp"
+
+                android:layout_weight="9.3"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    <ImageButton
+        android:id="@+id/trade_content_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/trade_content_delete"/>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:rowCount="2"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:columnCount="2"
+        >
 
         <TextView
             android:id="@+id/Ind_ID"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_margin="5dp"
+            android:background="@drawable/trade_content_detail"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/Ind_Nation"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_margin="5dp"
+            android:background="@drawable/trade_content_detail"
+            android:gravity="center" />
         <TextView
             android:id="@+id/Ind_YMDH"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_margin="5dp"
+            android:background="@drawable/trade_content_detail"
             android:gravity="center"
-            android:text="test"/>
+            />
 
 
         <TextView
             android:id="@+id/Ind_is_ok"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_margin="5dp"
+            android:background="@drawable/trade_content_detail"
+            android:gravity="center" />
+    </GridLayout>
 
-    </LinearLayout>
 
-    <LinearLayout
+
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/reply_edit"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/reply_edit"
             android:inputType="text"
-            android:layout_height="match_parent"
-            android:layout_weight="8" />
+            android:textSize="16sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/reply_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/reply_enter"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reply_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:layout_weight="50"
+        android:background="@drawable/reply_recycler"
         android:orientation="vertical" />
 
 

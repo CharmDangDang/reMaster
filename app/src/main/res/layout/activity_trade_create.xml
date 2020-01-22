@@ -1,98 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFA4A4"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context=".TradeFrag.TradeCreateActivity">
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+
+        <ImageButton
+            android:id="@+id/trade_create_Cancel"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/top">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/titlecreate"
-                android:paddingStart="5dp"
-                android:gravity="center"
-                android:textSize="20sp"
-                tools:ignore="RtlSymmetry" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="text"
-                android:textSize="20sp"
-                android:paddingEnd="5dp"
-                android:id="@+id/trade_create_title"
-                tools:ignore="RtlSymmetry"
-                android:hint="제목은 15자 내외"
-                android:layout_marginEnd="5dp"/>
+            android:layout_weight="30"
+            android:adjustViewBounds="true"
+            android:background="#EFA4A4"
+            android:src="@drawable/trade_cancel" />
 
-        </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="40" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/trade_create_OK"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top"
-            android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="14dp"
-            android:paddingLeft="5dp"
-            android:text="내용 :"
-            android:id="@+id/content"
-            android:textSize="20sp" />
+            android:layout_weight="30"
+            android:adjustViewBounds="true"
+            android:background="#EFA4A4"
+            android:src="@drawable/trade_create" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="5" />
+
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/trade_titletext" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="5" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom"
-            android:layout_below="@+id/top"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:id="@+id/trade_create_content"
-            android:layout_marginBottom="5dp"
-            android:hint="내용을 입력해주세요."
-            android:layout_toEndOf="@+id/content"
-            android:gravity="top"/>
+            android:id="@+id/trade_create_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="55"
+            android:background="@drawable/trade_title"
+            android:hint="특수문자 없이 15자 내외"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="55"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:id="@+id/bottom"
-            android:weightSum="2"
-            >
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="20dp"
-                android:text="@string/tradeCreateCancel"
-                android:textSize="20sp"
-                android:id="@+id/trade_create_Cancel"
-                android:layout_marginRight="20dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:weightSum="100">
 
-                />
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:id="@+id/trade_create_OK"
-                android:text="@string/tradeCreateOK"
-                android:textSize="20sp"
-                />
+            <ImageView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="18"
+                android:adjustViewBounds="true"
+                android:src="@drawable/trade_contenttext" />
 
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="82" />
         </LinearLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="5" />
+
+        <EditText
+            android:id="@+id/trade_create_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="55"
+            android:background="@drawable/trade_content"
+            android:gravity="top"
+            android:hint="@string/plz_enter_content"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
+    </LinearLayout>
 
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="2.5" />
 
-    </RelativeLayout>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+
+        <RadioButton
+            android:id="@+id/imkr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/korea_trade" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+
+        <RadioButton
+            android:id="@+id/imjp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/japan_trade" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+    </RadioGroup>
+</LinearLayout>

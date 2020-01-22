@@ -16,7 +16,6 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustPan"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MailSendActivity"></activity>
         <activity
             android:name=".TradeFrag.TradeContentActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -61,7 +60,15 @@
 
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
+        </activity>
     </application>
 
 </manifest>

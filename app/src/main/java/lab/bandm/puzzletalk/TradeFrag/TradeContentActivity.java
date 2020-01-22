@@ -2,18 +2,22 @@ package lab.bandm.puzzletalk.TradeFrag;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,17 +41,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import lab.bandm.puzzletalk.R;
 import lab.bandm.puzzletalk.TokenRD;
 import lab.bandm.puzzletalk.clickUtil.ProtectedOverlappingClick;
 
 import static lab.bandm.puzzletalk.R.id;
 import static lab.bandm.puzzletalk.R.layout;
-import static lab.bandm.puzzletalk.R.string;
 
 public class TradeContentActivity extends AppCompatActivity {
     static RequestQueue requestQueue;
-    TextView Ind_title,Ind_content,Ind_ID,Ind_Nation,Ind_is_ok,Ind_YMDH;
+    TextView Ind_title, Ind_content, Ind_ID, Ind_Nation, Ind_is_ok, Ind_YMDH;
     int position;
     ArrayList<TradeData> tradeData = new ArrayList<>();
     RecyclerView recyclerView;
@@ -55,40 +60,56 @@ public class TradeContentActivity extends AppCompatActivity {
     TradeReplyAdapter adapter;
     ArrayList<ReplyData> replyDataSet = new ArrayList<>();
     EditText reply_edit;
-    Button reply_submit;
+    ImageButton reply_submit, content_done, content_back, content_delete;
     SharedPreferences preferences;
     DatabaseReference reference;
     DatabaseReference getTokenReference;
     SingleClickListener singleClickListener;
+    OnClickOnContent onClickOnContent = new OnClickOnContent();
     TokenRD tokenRD;
-
     String myToken;
-
+    String myId;
+    private final int CODE_DELETE = 1102201;
+    private final int CODE_DONE = 1102202;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_trade_content);
+        preferences = getSharedPreferences("PrefName", MODE_PRIVATE);
+        myId = preferences.getString("로그인아이디", "");
+        myToken = preferences.getString("myToken", "");
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
+
         Intent intent = getIntent();
-        position = intent.getIntExtra("position",0);
+        position = intent.getIntExtra("position", 0);
         tradeData = (ArrayList<TradeData>) intent.getSerializableExtra("trade");
 
 
         FINDID();
-        assert tradeData != null;
-        Ind_title.setText(getString(string.trade_title)+tradeData.get(position).getTrade_title());
-        Ind_content.setText(getString(string.trade_content)+tradeData.get(position).getTrade_content());
-        Ind_ID.setText("작성자 : "+tradeData.get(position).getTrade_id());
-        Ind_Nation.setText("서버 : "+tradeData.get(position).getNation());
-        Ind_is_ok.setText("거래 :"+tradeData.get(position).getIsOK());
-        Ind_YMDH.setText("작성일 : "+tradeData.get(position).getTrade_YMDH());
+        Ind_title.setText(tradeData.get(position).getTrade_title());
+        Ind_content.setText(tradeData.get(position).getTrade_content());
+        Ind_ID.setText("작성자 : " + tradeData.get(position).getTrade_id());
+        Ind_Nation.setText("서버 : " + tradeData.get(position).getNation());
+        Ind_is_ok.setText("거래 : " + tradeData.get(position).getIsOK());
+        Ind_YMDH.setText(tradeData.get(position).getTrade_YMDH());
+        if (!tradeData.get(position).getTrade_id().equals(myId)){
+            content_done.setVisibility(View.INVISIBLE);
+            content_delete.setVisibility(View.INVISIBLE);
+        }
+        if (tradeData.get(position).getIsOK().equals("X")) {
+            content_done.setVisibility(View.INVISIBLE);
+            reply_edit.setVisibility(View.INVISIBLE);
+            reply_submit.setVisibility(View.INVISIBLE);
+        }
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 
 
-        adapter = new TradeReplyAdapter(this,replyDataSet);
+        adapter = new TradeReplyAdapter(this, replyDataSet);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
@@ -137,33 +158,12 @@ public class TradeContentActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 tokenRD = dataSnapshot.getValue(TokenRD.class);
-
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-// 에디트텍스트에 댓글 확인 누르면
-
-
-
-
-
-
     }
 
     public void FINDID() {
@@ -176,49 +176,134 @@ public class TradeContentActivity extends AppCompatActivity {
         recyclerView = findViewById(id.reply_recyclerview);
         reply_edit = findViewById(id.reply_edit);
         reply_submit = findViewById(id.reply_btn);
+        content_back = findViewById(id.trade_content_back);
+        content_back.setOnClickListener(onClickOnContent);
+        content_done = findViewById(id.trade_content_done);
+        content_done.setOnClickListener(onClickOnContent);
+        content_delete = findViewById(id.trade_content_delete);
+        content_delete.setOnClickListener(onClickOnContent);
 
 
     }
+
+    class OnClickOnContent implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case id.trade_content_back:
+                    finish();
+                    break;
+                case id.trade_content_delete:
+                    MakeDialog(CODE_DELETE);
+                    break;
+
+                case id.trade_content_done:
+                    MakeDialog(CODE_DONE);
+                    break;
+            }
+        }
+    }
+
+    public void MakeDialog(final int code) {
+        CharSequence dialog_title = null;
+        CharSequence dialog_content = null;
+        final AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(TradeContentActivity.this);
+        if (code == CODE_DELETE) {
+            dialog_title = "삭제";
+            dialog_content = "삭제하시겠습니까?";
+        } else if (code == CODE_DONE) {
+            dialog_title = "거래완료";
+            dialog_content = "거래완료하시겠습니까?";
+        }
+
+        builder.setTitle(dialog_title)        // 제목 설정
+                .setMessage(dialog_content)        // 메세지 설정
+                .setCancelable(true) // 뒤로 버튼 클릭시 취소 가능 설정
+                .setIcon(R.drawable.puztalkminiicon)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        TradeAsyncTask taskForDelete = new TradeAsyncTask(TradeContentActivity.this, Ind_title.getText().toString(), code);
+                        taskForDelete.execute();
+                        if (code == CODE_DELETE) {
+                            reference = FirebaseDatabase.getInstance().getReference().child("write").child(Ind_title.getText().toString());
+                            reference.setValue(null);
+                            reference = FirebaseDatabase.getInstance().getReference().child("reply").child(Ind_title.getText().toString());
+                            reference.setValue(null);
+                            finish();
+                        } else if(code == CODE_DONE) {
+                            content_done.setVisibility(View.INVISIBLE);
+                            reply_edit.setVisibility(View.INVISIBLE);
+                            reply_submit.setVisibility(View.INVISIBLE);
+                        }
+
+
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+
+
+        dialog = builder.create();    // 알림창 객체 생성
+        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+            }
+        });
+        dialog.show();    // 알림창 띄우기
+
+    }
+
 
     class SingleClickListener extends ProtectedOverlappingClick {
 
         @Override
         public void onSingleClick(View v) {
-            preferences = getSharedPreferences("PrefName",MODE_PRIVATE);
-            String myId = preferences.getString("로그인아이디","");
-            myToken = preferences.getString("myToken","");
-            String r_content = reply_edit.getText().toString();
-            String r_YMDH = String.valueOf(System.currentTimeMillis());
-            ReplyData replyData = new ReplyData();
-            replyData.setR_id(myId);
-            replyData.setR_content(r_content);
-            replyData.setR_YMDH(r_YMDH);
-            reference.push().setValue(replyData);
-            if(!tokenRD.getmToken().equals(myToken)) {
-                send(tokenRD);
+            if (!reply_edit.getText().toString().trim().equals("")) {
+                String r_content = reply_edit.getText().toString();
+                String r_YMDH = String.valueOf(System.currentTimeMillis());
+                ReplyData replyData = new ReplyData();
+                replyData.setR_id(myId);
+                replyData.setR_content(r_content);
+                replyData.setR_YMDH(r_YMDH);
+                reference.push().setValue(replyData);
+                if (!tokenRD.getmToken().equals(myToken)) {
+                    send(tokenRD);
+                }
+                reply_edit.setText("");
+                keyboardHidden();
+            } else {
+                Toast.makeText(TradeContentActivity.this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
             }
-            reply_edit.setText("");
-            keyboardHidden();
         }
     }
+
     public void send(TokenRD tokenRD) {
 
         JSONObject requestData = new JSONObject();
         String header = "퍼톡에서 알림이 왔어요!";
-        String body = "작성하신 게시글에 댓글이 달렸습니다! 빨리 확인해주세요!";
+        String body = "게시글 [" + Ind_title.getText().toString() + "] 에 댓글이 달렸습니다!";
 
         try {
             requestData.put("priority", "high");
 
             JSONObject dataObj = new JSONObject();
 
-            dataObj.put("head",header);
+            dataObj.put("head", header);
             dataObj.put("contents", body);
-
             requestData.put("data", dataObj);
             JSONArray idArray = new JSONArray();
 
-                idArray.put(0, tokenRD.getmToken());
+            idArray.put(0, tokenRD.getmToken());
 
 //            idArray.put(1,regId);
             requestData.put("registration_ids", idArray);
@@ -229,9 +314,11 @@ public class TradeContentActivity extends AppCompatActivity {
             @Override
             public void onRequestCompleted() {
             }
+
             @Override
             public void onRequestStarted() {
             }
+
             @Override
             public void onRequestWithError(VolleyError error) {
 
@@ -240,12 +327,13 @@ public class TradeContentActivity extends AppCompatActivity {
     }
 
     public interface SendResponseListener {
-         void onRequestStarted();
+        void onRequestStarted();
 
-         void onRequestCompleted();
+        void onRequestCompleted();
 
-         void onRequestWithError(VolleyError error);
+        void onRequestWithError(VolleyError error);
     }
+
     public void sendData(JSONObject requestData, final SendResponseListener listener) {
         JsonObjectRequest request = new JsonObjectRequest(
 
@@ -264,8 +352,7 @@ public class TradeContentActivity extends AppCompatActivity {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
+                return new HashMap<>();
             }
 
             @Override
@@ -281,16 +368,19 @@ public class TradeContentActivity extends AppCompatActivity {
             }
         };
 
+
         request.setShouldCache(false);
         listener.onRequestStarted();
+
         requestQueue.add(request);
     }
 
-    private void keyboardHidden(){
+    private void keyboardHidden() {
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
-
 
 
 }

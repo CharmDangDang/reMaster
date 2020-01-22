@@ -9,7 +9,7 @@
         android:width="500dp"/>
 
     <stroke android:color="@color/bora"
-        android:width="5dp"
+        android:width="3dp"
         android:dashGap="2dp"/>
 
 

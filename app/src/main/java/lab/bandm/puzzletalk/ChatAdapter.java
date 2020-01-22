@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<ChatData> mDataset;
     private String myNickname;
+    OnlongClick onlongClick = new OnlongClick();
 
 
     public ChatAdapter(ArrayList<ChatData> myDataset, String myNickname) {
@@ -66,6 +67,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case 0:
                 MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
                 myChatViewHolder.text_Mymsg.setText(chatData.getMsg());
+                myChatViewHolder.text_Mymsg.setOnLongClickListener(onlongClick);
+
 
                 break;
             case 1:
@@ -74,6 +77,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 enemyChatViewHolder.text_Nickname.setTextColor(chatData.getNameColor());
 
                 enemyChatViewHolder.text_msg.setText(chatData.getMsg());
+                enemyChatViewHolder.text_msg.setOnLongClickListener(onlongClick);
                 break;
             default:
                 break;

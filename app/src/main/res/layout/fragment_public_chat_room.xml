@@ -1,132 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context=".Frag.PublicChatRoomFrag">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/publicRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/editlinear"
-        android:background="#9bbbd4"
-        android:orientation="vertical"
-        android:id="@+id/publicRecyclerView"/>
+        android:layout_height="0dp"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:id="@+id/editlinear"
-        android:background="#9bbbd4"
-        android:layout_above="@+id/codeipryoku">
+        android:layout_weight="69"
+        android:background="@drawable/main_chat_background"
+        android:orientation="vertical" />
 
-        <EditText
-            android:id="@+id/publicChatEdit"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="7"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="31"
+        android:background="@drawable/bonobono">
 
-            android:background="@color/chatBackground"
+        <LinearLayout
+            android:id="@+id/edit_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:weightSum="100">
 
-            android:inputType="text"
-            android:maxLines="1"
+            <EditText
+                android:id="@+id/publicChatEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_weight="80"
+                android:paddingStart="5dp"
+                android:longClickable="true"
 
-            android:textSize="20sp"
-            tools:ignore="NestedWeights,UnusedAttribute" />
+                android:background="@drawable/btndesign"
+                android:hint="채팅을 입력해주세요"
+
+                android:inputType="text"
+                android:maxLines="1"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/publicEnterchat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginEnd="7dp"
+                android:layout_weight="20"
+                android:background="@drawable/main_chat_enter"
+                android:minWidth="0dp"
+                android:layout_marginTop="1dp"
+                android:minHeight="0dp" />
+        </LinearLayout>
+
 
         <Button
-            android:id="@+id/publicEnterchat"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:text="@string/sendchat"
-            android:textColor="@color/RealWhite"
-            android:textSize="20sp"
+            android:id="@+id/roomNumReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/roomNum"
 
-            android:background="@drawable/btndesign"
+
+            android:background="@drawable/clipboard_reset"
+            android:minWidth="0dp"
+            android:minHeight="0dp" />
+
+        <Button
+            android:id="@+id/ctrlV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/roomNum"
+            android:layout_alignEnd="@+id/edit_linear"
+            android:background="@drawable/clipboard_ctrl_v" />
+
+
+        <EditText
+            android:id="@+id/roomNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_create_room"
+
+            android:layout_centerInParent="true"
+            android:background="@drawable/room_number"
+            android:hint="1번방은 공용채팅입니다."
+            android:inputType="number"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingStart="15dp"
+
+
+            android:text="1"
             />
-
-
-
-    </LinearLayout>
-    <TextView
-        android:id="@+id/codeipryoku"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/roomNum"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
-        android:background="#222266"
-        android:gravity="center"
-
-        android:text="멀티 참여 코드를 입력해주세요"
-        android:textSize="20sp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/roomNum"
-        android:layout_alignBottom="@+id/roomNum"
-        android:layout_marginTop="-10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="-4dp"
-        android:layout_toStartOf="@+id/roomNum"
-        android:text="초기화"
-        android:id="@+id/roomNumReset"/>
-
-    <Button
-        android:id="@+id/ctrlV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/roomNum"
-        android:layout_alignBottom="@+id/roomNum"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="-8dp"
-        android:layout_marginBottom="-4dp"
-        android:layout_toEndOf="@+id/roomNum"
-        android:text="붙여넣기" />
-
-    <EditText
-        android:id="@+id/roomNum"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/linearbottom"
-        android:layout_centerInParent="true"
-        android:background="@color/pink"
-        android:inputType="number"
-        android:hint="1~10번방은 공용채팅입니다."
-        android:text="1"
-        android:textSize="25sp" />
-
-    <LinearLayout
-        android:id="@+id/linearbottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        >
 
         <Button
             android:id="@+id/btn_create_room"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/main_chatroom_enter"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:padding="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="@string/createRoom"
-            android:layout_gravity="center"
             android:textSize="20sp" />
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 
-
-
-
-
-
-
-</RelativeLayout>
+</LinearLayout>

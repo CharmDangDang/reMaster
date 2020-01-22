@@ -13,17 +13,17 @@ import java.util.ArrayList;
 
 import lab.bandm.puzzletalk.ChatData;
 import lab.bandm.puzzletalk.MainActivity;
+import lab.bandm.puzzletalk.OnlongClick;
 import lab.bandm.puzzletalk.R;
 
 public class PublicChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<ChatData> mDataset;
     private String myNickname;
-    private int inch =(int)( getScreenInches()+0.5);
+    private int inch = (int) (getScreenInches() + 0.5);
+    private OnlongClick longClick = new OnlongClick();
 
 
-
-
-    public PublicChatAdapter(ArrayList<ChatData> myDataset, String myNickname) {
+    PublicChatAdapter(ArrayList<ChatData> myDataset, String myNickname) {
 
         addChats(myDataset);
         this.myNickname = myNickname;
@@ -74,14 +74,16 @@ public class PublicChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case 0:
                 PublicChatAdapter.MyChatViewHolder myChatViewHolder = (MyChatViewHolder) holder;
                 myChatViewHolder.text_Mymsg.setText(chatData.getMsg());
-                myChatViewHolder.text_Mymsg.setTextSize(3*inch);
+                myChatViewHolder.text_Mymsg.setTextSize(3 * inch);
+                myChatViewHolder.text_Mymsg.setOnLongClickListener(longClick);
                 break;
             case 1:
                 PublicChatAdapter.EnemyChatViewHolder enemyChatViewHolder = (EnemyChatViewHolder) holder;
                 enemyChatViewHolder.text_Nickname.setText(chatData.getEnemyname());
                 enemyChatViewHolder.text_Nickname.setTextColor(chatData.getNameColor());
-                enemyChatViewHolder.text_msg.setTextSize(3*inch);
+                enemyChatViewHolder.text_msg.setTextSize(3 * inch);
                 enemyChatViewHolder.text_msg.setText(chatData.getMsg());
+                enemyChatViewHolder.text_msg.setOnLongClickListener(longClick);
                 break;
             default:
                 break;
@@ -104,7 +106,7 @@ public class PublicChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mDataset == null ? 0 : mDataset.size();
     }
 
-    public void addChat(ChatData chat) {
+    void addChat(ChatData chat) {
         mDataset.add(chat);
     }
 
@@ -115,7 +117,7 @@ public class PublicChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    double getScreenInches() {
+    private double getScreenInches() {
 
         DisplayMetrics dm = new DisplayMetrics();
         MainActivity.context.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -125,10 +127,7 @@ public class PublicChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         double hi = (double) height / (double) dm.ydpi;
         double x = Math.pow(wi, 2);
         double y = Math.pow(hi, 2);
-        double screenInches = Math.sqrt(x + y);
 
-        return screenInches;
+        return Math.sqrt(x + y);
     }
-
-
 }

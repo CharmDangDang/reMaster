@@ -10,7 +10,10 @@
         android:textStyle="bold"
         android:textColor="#000000"
         android:textAlignment="textEnd"
+        android:paddingEnd="3dp"
         android:id="@+id/my_chat"
+        android:autoLink="web"
+
         />
 
 </LinearLayout>

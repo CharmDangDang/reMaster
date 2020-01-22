@@ -1,61 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/relative_trade_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="10">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/title_search"
-        android:inputType="text"
-        android:maxLines="1"
-        android:id="@+id/trade_search_edit"
-        android:textSize="16sp"
-        />
+    android:background="#121212"
+    android:orientation="vertical">
+
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:id="@+id/Trade_refresh"
-        android:layout_weight="9.3">
-    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/trade_recycler"
-        tools:listitem="@layout/trade_item"
-        />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="5dp">
 
-        android:orientation="horizontal"
-        android:weightSum="10">
-        <TextView
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trade_recycler"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="내 글"
-            android:id="@+id/ildanTest"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:clickable="true"
-            android:layout_weight="2"
-            />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="6.8"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/bora"
-            android:clickable="true"
-            android:layout_weight="1.5"
-            android:focusable="true"
-            android:id="@+id/trade_create_button"/>
-    </LinearLayout>
-</LinearLayout>
+            tools:listitem="@layout/trade_item" />
+
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/trade_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#B2B2F3"
+        android:src="@drawable/ic_add_white"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+         />
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/trade_create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/trade_fab"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#B2B2F3"
+        android:src="@drawable/ic_add_white"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/trade_korea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/trade_create_button"
+        android:layout_marginBottom="5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:backgroundTint="#B2B2F3"
+        android:src="@drawable/ic_kr"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/trade_japan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/trade_korea"
+        android:layout_marginBottom="5dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="#B2B2F3"
+        android:src="@drawable/ic_jp"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/trade_my"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/trade_japan"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#B2B2F3"
+        android:src="@drawable/ic_my"
+        android:visibility="invisible"
+        app:borderWidth="0dp"
+        app:fabSize="normal"/>
+</RelativeLayout>

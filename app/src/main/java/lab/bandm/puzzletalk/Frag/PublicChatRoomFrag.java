@@ -44,6 +44,7 @@ public class PublicChatRoomFrag extends Fragment {
     private Button btn_roomNum;
     private Button btn_reset;
     private Button publicEnter;
+
     private EditText roomNumber;
     private EditText publicChat;
     private View view;
@@ -53,6 +54,7 @@ public class PublicChatRoomFrag extends Fragment {
     private String myId;
     private int nameColor;
     private SharedPreferences prefs;
+    SharedPreferences.Editor editor;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private PublicChatAdapter publicChatAdapter;
@@ -73,11 +75,15 @@ public class PublicChatRoomFrag extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (container != null) {
             view = inflater.inflate(R.layout.fragment_public_chat_room, container, false);
         }
+        prefs = Objects.requireNonNull(this.getActivity()).getSharedPreferences("PrefName", Context.MODE_PRIVATE);
+
+        myId = prefs.getString("로그인아이디", "");
+        nameColor = prefs.getInt("색깔", Color.RED);
         onClick = new publicCustomOnClick();
         FINDID();
 
@@ -87,10 +93,6 @@ public class PublicChatRoomFrag extends Fragment {
         recyclerView.setHasFixedSize(true);                                 //리사이클러뷰의 최적화?를 설정
         layoutManager = new LinearLayoutManager(this.getContext());              //레이아웃매니저 만들기
         recyclerView.setLayoutManager(layoutManager);
-        prefs = Objects.requireNonNull(this.getActivity()).getSharedPreferences("PrefName", Context.MODE_PRIVATE);
-        myId = prefs.getString("로그인아이디", "");
-        nameColor = prefs.getInt("색깔", Color.RED);
-
         publicChatAdapter = new PublicChatAdapter(arrayList, myId);
         recyclerView.setAdapter(publicChatAdapter);
         clip = (ClipboardManager) Objects.requireNonNull(getActivity()).getSystemService(CLIPBOARD_SERVICE);
@@ -99,9 +101,10 @@ public class PublicChatRoomFrag extends Fragment {
         return view;
     }
 
-    public void FINDID() {
+    private void FINDID() {
         btn_createRoom = view.findViewById(R.id.btn_create_room);
         btn_createRoom.setOnClickListener(onClick);
+
         btn_roomNum = view.findViewById(R.id.ctrlV);
         btn_roomNum.setOnClickListener(onClick);
         btn_reset = view.findViewById(R.id.roomNumReset);
@@ -109,8 +112,17 @@ public class PublicChatRoomFrag extends Fragment {
         roomNumber = view.findViewById(R.id.roomNum);
         recyclerView = view.findViewById(R.id.publicRecyclerView);
         publicChat = view.findViewById(R.id.publicChatEdit);
+        publicChat.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipData.Item item = Objects.requireNonNull(clip.getPrimaryClip()).getItemAt(0);
+                publicChat.setText(item.getText().toString());
+                return false;
+            }
+        });
         publicEnter = view.findViewById(R.id.publicEnterchat);
         publicEnter.setOnClickListener(onClick);
+
 
     }
 
@@ -120,11 +132,9 @@ public class PublicChatRoomFrag extends Fragment {
                     Uri.parse("package:" + Objects.requireNonNull(this.getActivity()).getPackageName()));
             this.getActivity().startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
         } else {
+            editor = prefs.edit();
             RoomNumbered = roomNumber.getText().toString().trim();
-            SharedPreferences prefs = Objects.requireNonNull(this.getActivity()).getSharedPreferences("PrefName", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
             editor.putString("방번호", roomNumber.getText().toString());
-            //editor.putInt("아이디색상", set_my_id.getCurrentTextColor());
             editor.apply();
             Intent intent = new Intent(this.getContext(), ChatService.class);
             Objects.requireNonNull(this.getContext()).startService(intent);
@@ -153,17 +163,18 @@ public class PublicChatRoomFrag extends Fragment {
                 case R.id.roomNumReset:
                     roomNumber.setText("");
                     break;
+
                 case R.id.publicEnterchat:
                     String msg = publicChat.getText().toString();                 //메세지 불러오기
                     if (msg.length() != 0) {
                         String enemyNick = myId;   //prefs에서 아이디값 불러오기
-                        ChatData chat = new ChatData(enemyNick, msg,nameColor);                         //chatdata 선언
+                        ChatData chat = new ChatData(enemyNick, msg, nameColor);                         //chatdata 선언
                         publicRef.push().setValue(chat);//데이터에 chatdata 넣기
                         publicChat.setText("");
-                        //chat_edit.clearFocus();
                         recyclerView.scrollToPosition(publicChatAdapter.getItemCount() - 1);
-                        // updateOverlayView(0);
+
                     }//리사이클러뷰 항상 하단으로 포지션주기
+
                     break;
 
 
@@ -208,13 +219,12 @@ public class PublicChatRoomFrag extends Fragment {
         }
     }
 
-    public void BackToTheFuture() {
+    private void BackToTheFuture() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
-
 
 
 }

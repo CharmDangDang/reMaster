@@ -14,11 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.madrapps.pikolo.ColorPicker;
 import com.madrapps.pikolo.listeners.SimpleColorSelectionListener;
 
+import java.util.Objects;
+
 public class SettingActivity extends AppCompatActivity {
 
 
-    int color ;
-    Button exit,submit ;
+    int color;
+    Button exit, submit;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
@@ -28,7 +30,7 @@ public class SettingActivity extends AppCompatActivity {
 
     int current_color;
     int change_color;
-    RadioButton kr,jp;
+    RadioButton kr, jp;
 
 
     @SuppressLint({"CommitPrefEdits", "ResourceAsColor"})
@@ -36,27 +38,21 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
-
-
-
-
+        Objects.requireNonNull(getSupportActionBar()).hide();
         FINDID();
-
         preferences = getSharedPreferences("PrefName", MODE_PRIVATE);
         editor = preferences.edit();
+        String server = preferences.getString("서버", "한국");
+        current_color = preferences.getInt("색깔", 0);
 
-        String server = preferences.getString("서버","한국");
-        current_color = preferences.getInt("색깔",0);
-
-        if(server.equals("한국")){
+        if (server.equals("한국")) {
 
             kr.setChecked(true);
         } else {
             jp.setChecked(true);
         }
 
-        if(current_color==0){
+        if (current_color == 0) {
             colorview.setBackgroundColor(getColor(R.color.bora));
             colorPicker.setColor(getColor(R.color.bora));
         } else {
@@ -67,15 +63,15 @@ public class SettingActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(kr.isChecked()) {
+                if (kr.isChecked()) {
                     editor.remove("서버");
-                    editor.putString("서버","한국");
-                } else if (jp.isChecked()){
+                    editor.putString("서버", "한국");
+                } else if (jp.isChecked()) {
                     editor.remove("서버");
-                    editor.putString("서버","일본");
+                    editor.putString("서버", "일본");
                 }
                 editor.remove("색깔");
-                editor.putInt("색깔",change_color);
+                editor.putInt("색깔", change_color);
                 editor.apply();
                 Toast.makeText(SettingActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
@@ -96,36 +92,16 @@ public class SettingActivity extends AppCompatActivity {
         });
 
     }
+
     public void FINDID() {
         kr = findViewById(R.id.korea_server);
         jp = findViewById(R.id.japan_server);
-        submit= findViewById(R.id.setting_submit);
+        submit = findViewById(R.id.setting_submit);
         exit = findViewById(R.id.setting_exit);
         colorPicker = findViewById(R.id.colorpicker);
         colorview = findViewById(R.id.colorview);
 
     }
 
-
-
-            /*AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, color, new AmbilWarnaDialog.OnAmbilWarnaListener()
-            {
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color) {
-
-                    change_color = color;
-                    ambil.setBackgroundColor(change_color);
-                }
-
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog) {
-
-                }
-
-            });
-
-            dialog.show();
-        }*/
-
-    }
+}
 

@@ -31,5 +31,11 @@
     <string name="tradeCreateOK">작성</string>
     <string name="trade_title">제목 :</string>
     <string name="trade_content">내용 :</string>
-    <string name="setting">설정</string>>
+    <string name="setting">설정</string>
+
+    <string name="setting_close">닫기</string>
+    <string name="korea_trade">한국</string>
+    <string name="japan_trade">일본</string>
+    <string name="plz_enter_content">내용을 입력해주세요.</string>
+    <string name="title_is_15">제목은 15자 내외</string>
 </resources>

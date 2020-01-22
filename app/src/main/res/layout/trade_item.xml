@@ -3,9 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="10">
+    android:orientation="vertical"
+    android:background="#363636"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#121212"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
     <ImageView
         android:id="@+id/trade_nation"
         android:layout_width="0dp"
@@ -24,7 +34,8 @@
         android:maxLines="1"
         android:paddingStart="10dp"
         android:text="제목"
-        android:textSize="14sp"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
         tools:ignore="RtlSymmetry" />
 
     <TextView
@@ -34,8 +45,9 @@
         android:layout_weight="2.3"
         android:gravity="center"
         android:maxLines="1"
+        android:textColor="#ffffff"
         android:text="아이디"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/trade_YMDH"
@@ -44,6 +56,7 @@
         android:layout_weight="1.7"
         android:gravity="center"
         android:maxLines="1"
+        android:textColor="#ffffff"
         android:text="날짜"
         android:textSize="14sp" />
 
@@ -54,8 +67,16 @@
         android:layout_weight="0.7"
         android:gravity="center"
         android:maxLines="1"
+        android:textColor="#ffffff"
         android:text="O"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#121212"/>
+
+
 
 
 </LinearLayout>

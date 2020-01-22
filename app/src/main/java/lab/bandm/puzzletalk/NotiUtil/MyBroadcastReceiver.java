@@ -7,25 +7,27 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent){
         Bundle bundle=intent.getExtras();
-        String str="";
+        StringBuilder str= new StringBuilder();
 
         if(bundle!=null){
             Object[] pdus=(Object[])bundle.get("pdus");
 
-            SmsMessage[] message=new SmsMessage[pdus.length];
+            SmsMessage[] message=new SmsMessage[Objects.requireNonNull(pdus).length];
 
             for(int i=0;i<message.length;i++){
                 message[i]=SmsMessage.createFromPdu((byte[]) pdus[i]);
 
-                str+=message[i].getOriginatingAddress()+" / 메시지 : "+message[i].getMessageBody().toString()+"\n";
+                str.append(message[i].getOriginatingAddress()).append(" / 메시지 : ").append(message[i].getMessageBody().toString()).append("\n");
 
             }
-            Toast.makeText(context,str,Toast.LENGTH_LONG).show();
+            Toast.makeText(context, str.toString(),Toast.LENGTH_LONG).show();
         }
 
     }

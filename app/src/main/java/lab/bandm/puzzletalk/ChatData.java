@@ -5,12 +5,14 @@ public class ChatData {
     public String msg;
     public int nameColor;
 
+
     public ChatData () {}
 
     public ChatData(String enemyname, String msg, int nameColor) {
         this.enemyname = enemyname;
         this.msg = msg;
         this.nameColor = nameColor;
+
     }
 
     public int getNameColor() {

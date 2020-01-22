@@ -2,6 +2,8 @@ package lab.bandm.puzzletalk;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -33,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChatService extends Service {
 
@@ -77,10 +81,13 @@ public class ChatService extends Service {
      String roomNumber;
 
      int id_color;
+     int width;
+     int height;
      SharedPreferences prefs;
      int LAYOUT_FLAG = 0;
      MyChildListener myChildListener;
      MyCountPrfValueListener myCountPrfValueListener;
+
 
 
 
@@ -94,6 +101,22 @@ public class ChatService extends Service {
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
+
+        /*Display display = MainActivity.context.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+
+*/
+
+        DisplayMetrics dm = new DisplayMetrics();
+        MainActivity.context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        float density = dm.density;
+        width = (int) (density * 210);
+        height = (int) (density * 230);
+
+
 
         getLoginID();
         setChatLayout();
@@ -140,11 +163,12 @@ public class ChatService extends Service {
         id.setText(myId);
         id.setTextColor(id_color);
         recyclerView.setHasFixedSize(true);                                 //리사이클러뷰의 최적화?를 설정
+
         layoutManager = new LinearLayoutManager(chatView.getContext());              //레이아웃매니저 만들기
+        layoutManager.isAutoMeasureEnabled();
         recyclerView.setLayoutManager(layoutManager);
         chatAdapter = new ChatAdapter(chatDataArrayList, myId);
         recyclerView.setAdapter(chatAdapter);
-        recyclerView.getBackground().setAlpha(200);
 
 
         Log.d("룸넘버가 들어오는지 확인", roomNumber);
@@ -162,12 +186,22 @@ public class ChatService extends Service {
     void findID() {
         MyOnClickListener myOnClickListener = new MyOnClickListener();
         id = chatView.findViewById(R.id.chat_id);
-        recyclerView = chatView.findViewById(R.id.recylcerView);
+        recyclerView = chatView.findViewById(R.id.chat_recylcerView);
         btn_send = chatView.findViewById(R.id.Enterchat);
         btn_send.setOnClickListener(myOnClickListener);
         btn_exit = chatView.findViewById(R.id.btn_exit);
         btn_exit.setOnClickListener(myOnClickListener);
         chat_edit = chatView.findViewById(R.id.chatEdit);
+        chat_edit.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipboardManager clip = (ClipboardManager) MainActivity.context.getSystemService(CLIPBOARD_SERVICE);
+                ClipData.Item item = Objects.requireNonNull(clip.getPrimaryClip()).getItemAt(0);
+                chat_edit.setText(item.getText().toString());
+
+                return false;
+            }
+        });
 
         //방바꾸기
 
@@ -195,8 +229,8 @@ public class ChatService extends Service {
 
         chatView.setOnTouchListener(new MyOnTouchListener());
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        params = new WindowManager.LayoutParams(600
-                , 800,
+        params = new WindowManager.LayoutParams(width
+                , height,
                 LAYOUT_FLAG,
                 // very important, this sends touch events to underlying views
                 //WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
@@ -252,9 +286,9 @@ public class ChatService extends Service {
                     }//리사이클러뷰 항상 하단으로 포지션주기
                     break;
                 case R.id.btn_exit:
-                    stopSelf();
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    stopSelf();
                     break;
                 case R.id.btn_mini:
                     setMiniLayout();
@@ -266,8 +300,8 @@ public class ChatService extends Service {
 
                     windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
                     WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                            600,
-                            800,
+                            width,
+                            height,
                             LAYOUT_FLAG,
                             // very important, this sends touch events to underlying views
                             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -320,7 +354,7 @@ public class ChatService extends Service {
 
                         windowManager.updateViewLayout(v, lp);
                         //초기 터치 위치랑 움직인 거리 비교해서 참거짓 판별
-                        return touchClickChecker = Math.abs(xpos - xpos_OG) >= 5 || Math.abs(ypos - ypos_OG) >= 5;
+                        return touchClickChecker = Math.abs(xpos - xpos_OG) >= 10 || Math.abs(ypos - ypos_OG) >= 10;
                     }
             }
                     return touchClickChecker;

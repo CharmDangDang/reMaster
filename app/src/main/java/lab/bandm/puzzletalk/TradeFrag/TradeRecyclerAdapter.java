@@ -1,5 +1,6 @@
 package lab.bandm.puzzletalk.TradeFrag;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,23 +21,19 @@ import lab.bandm.puzzletalk.GetYMDH;
 import lab.bandm.puzzletalk.R;
 
 
-public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAdapter.CustomViewHolder> {
-
-    ArrayList<TradeData> dataArrayList;   //M
-    //ArrayList<TradeData> filteredList;
-
-    public ArrayList<TradeData> SubjectListTemp; //임시
-
-    public TradeRecyclerAdapter.SubjectDataFilter subjectDataFilter; // filterd
+public class TradeRecyclerAdapter extends RecyclerView.Adapter<TradeRecyclerAdapter.CustomViewHolder> implements Filterable {
+    ArrayList<TradeData> filteredList;
+    ArrayList<TradeData> unfilteredList; //임시
+    ArrayList<ReplyRD> replyCnt;
 
     private Activity context;
 
-    public TradeRecyclerAdapter(Activity context, ArrayList<TradeData> list) {
+    public TradeRecyclerAdapter(Activity context, ArrayList<TradeData> list,ArrayList<ReplyRD> reply) {
         this.context = context;
-        this.dataArrayList =list;
-        this.SubjectListTemp = list;
+        this.filteredList = list;
+        this.unfilteredList = list;
+        this.replyCnt = reply;
     }
-
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -44,7 +42,6 @@ public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAda
         TextView isOK;
         ImageView nationView;
 
-
         public CustomViewHolder(View view) {
             super(view);
             this.title = view.findViewById(R.id.trade_title);
@@ -52,38 +49,37 @@ public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAda
             this.name = view.findViewById(R.id.trade_id);
             this.isOK = view.findViewById(R.id.trade_isOk);
             this.nationView = view.findViewById(R.id.trade_nation);
-
+            this.title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int mPosition = getAdapterPosition();
+                    Intent intent = new Intent(context.getApplicationContext(), TradeContentActivity.class);
+                    intent.putExtra("position", mPosition);
+                    intent.putExtra("trade", filteredList);
+                    context.startActivity(intent);
+                }
+            });
         }
-
     }
-
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.trade_item, viewGroup, false);
-
         return new CustomViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull CustomViewHolder viewholder, final int position) {
+    public void onBindViewHolder(@NonNull CustomViewHolder viewholder, int position) {
 
-        viewholder.title.setText(dataArrayList.get(position).getTrade_title());
-        viewholder.title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context.getApplicationContext(),TradeContentActivity.class);
-                intent.putExtra("position",position);
-                intent.putExtra("trade",dataArrayList);
-                context.startActivity(intent);
-            }
-        });
-        viewholder.name.setText(dataArrayList.get(position).getTrade_id());
-        if (dataArrayList.get(position).getCurrentTime() != null) {
-            viewholder.time.setText(GetYMDH.formatTimeString(Long.parseLong(dataArrayList.get(position).getCurrentTime())).trim());
+        viewholder.title.setText(filteredList.get(position).getTrade_title());
+
+        viewholder.name.setText(filteredList.get(position).getTrade_id());
+        if (filteredList.get(position).getCurrentTime() != null) {
+            viewholder.time.setText(GetYMDH.formatTimeString(Long.parseLong(filteredList.get(position).getCurrentTime())).trim());
         }
-        viewholder.isOK.setText(dataArrayList.get(position).getIsOK());
-        if (dataArrayList.get(position).getNation().equals("한국")) {
+        viewholder.isOK.setText(filteredList.get(position).getIsOK());
+        if (filteredList.get(position).getNation().equals("한국")) {
             viewholder.nationView.setBackgroundColor(Color.rgb(255, 0, 0));
         } else {
             viewholder.nationView.setBackgroundColor(Color.rgb(0, 0, 255));
@@ -92,66 +88,40 @@ public class TradeRecyclerAdapter extends  RecyclerView.Adapter<TradeRecyclerAda
 
     @Override
     public int getItemCount() {
-        return (null != dataArrayList ? dataArrayList.size() : 0);
+        return (null != filteredList ? filteredList.size() : 0);
     }
+    public void addReplyCnt(ReplyRD replyRD) { replyCnt.add(replyRD);}
 
-
-
-
-
-
-        private class SubjectDataFilter extends Filter {
-
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
             @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-
-                charSequence = charSequence.toString().toLowerCase();
-
-                FilterResults filterResults = new FilterResults();
-
-                if (charSequence != null && charSequence.toString().length() > 0) {
-                    ArrayList<TradeData> arrayList1 = new ArrayList<TradeData>();
-
-                    for (int i = 0, l = dataArrayList.size(); i < l; i++) {
-                        TradeData tradeData = dataArrayList.get(i);
-
-                        if (tradeData.toString().toLowerCase().contains(charSequence))
-
-                            arrayList1.add(tradeData);
-                    }
-                    filterResults.count = arrayList1.size();
-
-                    filterResults.values = arrayList1;
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                //에디트 텍스트에 써있는값을 불러옴
+                if (charString.isEmpty()) {
+                    filteredList = unfilteredList; //에디트텍스트에 아무것도 안써져있다면 모든 자료를 보여주기
                 } else {
-                    synchronized (this) {
-                        filterResults.values = dataArrayList;
+                    ArrayList<TradeData> filteringList = new ArrayList<>();  //필터링중일떄 ex)'전ㅎ' 일때 보여줄 리스트
+                    for (TradeData tradeData : unfilteredList) {
 
-                        filterResults.count = dataArrayList.size();
+                        if (tradeData.getTrade_title().toLowerCase().contains(charString.toLowerCase()))
+                            filteringList.add(tradeData);
                     }
+                    filteredList = filteringList;
                 }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
                 return filterResults;
             }
+
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                SubjectListTemp = (ArrayList<TradeData>) results.values;
-
+                filteredList = (ArrayList<TradeData>) results.values;
                 notifyDataSetChanged();
-
             }
-
-
-
-            public Filter getFilter() {
-
-                if (subjectDataFilter == null) {
-
-                    subjectDataFilter = new TradeRecyclerAdapter.SubjectDataFilter();
-                }
-                return subjectDataFilter;
-            }
-
-        }
-
+        };
+    }
 }
 
 

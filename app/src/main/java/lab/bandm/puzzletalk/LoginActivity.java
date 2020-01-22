@@ -2,11 +2,9 @@ package lab.bandm.puzzletalk;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import lab.bandm.puzzletalk.clickUtil.ProtectedOverlappingClick;
@@ -22,7 +21,7 @@ import lab.bandm.puzzletalk.clickUtil.ProtectedOverlappingClick;
 public class LoginActivity extends AppCompatActivity {
 
 
-    Button btnenter, btnsign , btnAS;
+    Button btnenter, btnsign;
     EditText edit_id, edit_pwd;
     String id, pwd;
     SharedPreferences prefs;
@@ -33,17 +32,15 @@ public class LoginActivity extends AppCompatActivity {
     SingleClickListener singleClickListener;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        if (Build.VERSION.SDK_INT >= 21) {
-            getSupportActionBar().hide();
-        } else if (Build.VERSION.SDK_INT < 21) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-        }
 
+        Objects.requireNonNull(getSupportActionBar()).hide();
         FindID_and_setClickListener();
+        //ToobarChange();
 
     }
 
@@ -60,14 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         edit_pwd = findViewById(R.id.edit_pwd);
         id_Save = findViewById(R.id.id_Save);
         pwd_Save = findViewById(R.id.pw_Save);
-        btnAS = findViewById(R.id.btnAS);
-        btnAS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
         singleClickListener = new SingleClickListener();
 
         prefs = getSharedPreferences("PrefName", Activity.MODE_PRIVATE);
@@ -125,11 +114,11 @@ public class LoginActivity extends AppCompatActivity {
             editor.remove("chk_pwd");
         }
         editor.putString("로그인아이디", id);
-        editor.putString("서버","한국");
         editor.apply();
     }
 
     class SingleClickListener extends ProtectedOverlappingClick {
+
 
         @Override
         public void onSingleClick(View v) {
@@ -143,10 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                         String LOGIN_DB = "http://www.next-table.com/puzzletalk/PuzzleTALK_UserLogin.php";
                         UserAsyncTask userAsyncTask = new UserAsyncTask(id, pwd, LOGIN_DB, getApplicationContext());
                         userAsyncTask.execute();
-
                     } else {
                         Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
-
                     }
                     break;
                 case R.id.btnsign:
@@ -155,8 +142,6 @@ public class LoginActivity extends AppCompatActivity {
                     if(pattern.matcher(id).matches()&&pattern.matcher(pwd).matches()) {
                         UserAsyncTask userAsyncTask = new UserAsyncTask(id, pwd, INSERT_DB, getApplicationContext());
                         userAsyncTask.execute();
-
-
                     } else {
                         Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
                     }

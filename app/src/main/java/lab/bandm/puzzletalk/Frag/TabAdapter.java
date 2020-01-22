@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -28,12 +27,13 @@ public class TabAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> listF = new ArrayList<>();
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1,R.string.tab_text_2,R.string.tab_text_3};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1,R.string.tab_text_2};
     private final Context mContext;
 
     @SuppressLint("WrongConstant")
     public TabAdapter(Context context, FragmentManager fm) {
         super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
 
         mContext = context;
     }
@@ -53,6 +53,7 @@ public class TabAdapter extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
+
         return mContext.getResources().getString(TAB_TITLES[position]);
     }
 
